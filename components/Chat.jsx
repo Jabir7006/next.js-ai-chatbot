@@ -48,7 +48,7 @@ const Chat = () => {
         if (i === 0 || i % 2 !== 1) {
           modifiedResponse += responseArr[i];
         } else {
-          modifiedResponse += "<strong class='font-semibold'>" + responseArr[i] + "</strong>";
+          modifiedResponse += "<b>" + responseArr[i] + "</b>";
         }
       }
       let newResponse = modifiedResponse.split("*").join("</br>");
@@ -60,7 +60,6 @@ const Chat = () => {
       setMessages((prevMessages) => [...prevMessages, { role: "bot", text: <Loading /> }]);
 
       setLoading(false);
-
 
       // Typing effect: loop through each character of the response and update state
       for (let i = 0; i < newResponse.length; i++) {
@@ -91,7 +90,9 @@ const Chat = () => {
         <div className="messages-container">
           {messages.length === 0 && (
             <div className="flex justify-center items-center w-full h-[63vh] md:h-[70vh]">
-              <p className="text-sm md:text-lg max-w-prose font-medium mb-3 text-gray-500">Start by asking me something...</p>
+              <p className="text-sm md:text-lg max-w-prose font-medium mb-3 text-gray-500">
+                Start by asking me something...
+              </p>
             </div>
           )}
 
@@ -116,7 +117,11 @@ const Chat = () => {
                   msg.role === "user" ? "chat-bubble-primary" : "bg-gray-200 text-gray-800"
                 }`}
               >
-                {msg.text}
+                {loading && msg.role === "bot" && index === messages.length - 1 ? (
+                  <Loading />
+                ) : (
+                  <p dangerouslySetInnerHTML={{ __html: msg.text }}></p>
+                )}
               </div>
             </div>
           ))}
