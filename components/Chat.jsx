@@ -41,16 +41,31 @@ const Chat = () => {
       const response = await result.response;
       const text = await response.text();
 
+      let responseArr = text.split("**");
+      let modifiedResponse = "";
+
+      for (let i = 0; i < responseArr.length; i++) {
+        if (i === 0 || i % 2 !== 1) {
+          modifiedResponse += responseArr[i];
+        } else {
+          modifiedResponse += "<strong class='font-semibold'>" + responseArr[i] + "</strong>";
+        }
+      }
+      let newResponse = modifiedResponse.split("*").join("</br>");
+
       // Remove typing message
       setMessages((prevMessages) => prevMessages.slice(0, -1));
 
       // Update messages state with bot response (initially empty)
       setMessages((prevMessages) => [...prevMessages, { role: "bot", text: <Loading /> }]);
 
+      setLoading(false);
+
+
       // Typing effect: loop through each character of the response and update state
-      for (let i = 0; i < text.length; i++) {
+      for (let i = 0; i < newResponse.length; i++) {
         await new Promise((resolve) => setTimeout(resolve, 10)); // Delay between each character
-        const partialText = text.substring(0, i + 1); // Get characters up to the current index
+        const partialText = newResponse.substring(0, i + 1); // Get characters up to the current index
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages];
           updatedMessages[prevMessages.length - 1].text = partialText; // Update the last message
