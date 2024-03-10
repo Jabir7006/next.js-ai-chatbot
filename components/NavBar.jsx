@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/nextjs";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 const NavBar = () => {
@@ -10,9 +10,17 @@ const NavBar = () => {
         </Link>
       </div>
 
-      <div>
+      <SignedIn>
         <UserButton />
-      </div>
+      </SignedIn>
+
+      <SignedOut>
+        <Link href="/sign-in" className="text-gray-300 font-semibold py-2 px-5 bg-gray-800 shadow">
+          
+            Sign In
+         
+        </Link>
+      </SignedOut>
     </header>
   );
 };
